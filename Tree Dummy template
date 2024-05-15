@@ -1,0 +1,70 @@
+import java.util.*;
+
+class HelloWorld {
+    static class Node {
+        int data;
+        Node left;
+        Node right;
+
+        Node(int data) {
+            this.data = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+
+    public static void lot(Node root) {
+        if (root == null) return;
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+            System.out.print(node.data + " ");
+
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
+    }
+
+    //build tree
+    static Node buildTree(String val[]) {
+        Node nodes[] = new Node[val.length];
+        for (int i = 0; i < val.length; i++) {
+            if (!val[i].equals("null")) {
+                nodes[i] = new Node(Integer.parseInt(val[i]));
+            }
+        }
+
+        Node root = nodes[0];
+        for (int i = 0; i < val.length; i++) {
+            Node node = nodes[i];
+            if (node != null) {
+                int left = 2 * i + 1;
+                int right = 2 * i + 2;
+                if (left < val.length) {
+                    node.left = nodes[left];
+                }
+                if (right < val.length) {
+                    node.right = nodes[right];
+                }
+            }
+        }
+        return root;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the nodes:");
+        String val[] = sc.nextLine().split(" ");
+        Node rootNode = buildTree(val);
+
+        System.out.println("Level Order Traversal:");
+        lot(rootNode);
+    }
+}
