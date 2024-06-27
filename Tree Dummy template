@@ -68,3 +68,86 @@ class HelloWorld {
         lot(rootNode);
     }
 }
+
+
+//another vesrsion
+
+import java.util.*;
+
+class HelloWorld {
+    static class Node {
+        int data;
+        Node left;
+        Node right;
+        
+        Node(int data) {
+            this.data = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+    
+    // Print the tree in level order
+    static void levelOrder(Node root) {
+        if (root == null) return;
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            Node x = q.poll();
+            System.out.print(x.data + " ");
+            if (x.left != null) {
+                q.add(x.left);
+            }
+            if (x.right != null) {
+                q.add(x.right);
+            }
+        }
+    }
+    
+    // Build the tree from the array
+    static Node buildTree(String[] s) {
+        if (s.length == 0 || s[0].equals("null")) return null;
+        
+        Node root = new Node(Integer.parseInt(s[0]));
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        int i = 1;
+        
+        while (i < s.length) {
+            Node current = q.poll();
+            if (!s[i].equals("null")) {
+                current.left = new Node(Integer.parseInt(s[i]));
+                q.add(current.left);
+            }
+            i++;
+            if (i < s.length && !s[i].equals("null")) {
+                current.right = new Node(Integer.parseInt(s[i]));
+                q.add(current.right);
+            }
+            i++;
+        }
+        
+        return root;
+    }
+    
+    // Convert the tree to a Greater Sum Tree
+    static void fun(Node root, int[] sum) {
+        if (root == null) {
+            return;
+        }
+        fun(root.right, sum);
+        sum[0] += root.data;
+        root.data = sum[0];
+        fun(root.left, sum);
+    }
+    
+    public static void main(String[] args) {
+        String s[] = {"4", "1", "6", "0", "2", "5", "7", "null", "null", "null", "3", "null", "null", "null", "8"};
+        
+        Node root = buildTree(s);
+        int sum[] = {0};
+        fun(root, sum);
+        levelOrder(root);
+    }
+}
+
