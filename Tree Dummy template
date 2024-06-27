@@ -151,3 +151,72 @@ class HelloWorld {
     }
 }
 
+
+//recursive way
+
+
+import java.util.*;
+
+class HelloWorld {
+    static class Node {
+        int data;
+        Node left;
+        Node right;
+        
+        Node(int data) {
+            this.data = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+    
+    // Print the tree in level order
+    static void levelOrder(Node root) {
+        if (root == null) return;
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+        while (!q.isEmpty()) {
+            Node x = q.poll();
+            System.out.print(x.data + " ");
+            if (x.left != null) {
+                q.add(x.left);
+            }
+            if (x.right != null) {
+                q.add(x.right);
+            }
+        }
+    }
+    
+    // Build the tree from the array recursively
+    static Node buildTree(String[] s, int index) {
+        if (index >= s.length || s[index].equals("null")) return null;
+        
+        Node root = new Node(Integer.parseInt(s[index]));
+        root.left = buildTree(s, 2 * index + 1);
+        root.right = buildTree(s, 2 * index + 2);
+        
+        return root;
+    }
+    
+    // Convert the tree to a Greater Sum Tree
+    static void fun(Node root, int[] sum) {
+        if (root == null) {
+            return;
+        }
+        fun(root.right, sum);
+        sum[0] += root.data;
+        root.data = sum[0];
+        fun(root.left, sum);
+    }
+    
+    public static void main(String[] args) {
+        String s[] = {"4", "1", "6", "0", "2", "5", "7", "null", "null", "null", "3", "null", "null", "null", "8"};
+        
+        Node root = buildTree(s, 0);
+        int sum[] = {0};
+        fun(root, sum);
+        levelOrder(root);
+    }
+}
+
+
