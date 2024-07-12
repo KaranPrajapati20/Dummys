@@ -220,3 +220,62 @@ class HelloWorld {
 }
 
 
+
+//bst
+
+
+import java.util.*;
+public class Main {
+    
+    static class Node {
+        int data;
+        Node left;
+        Node right;
+        
+        Node(int data) {
+            this.data= data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+    
+    
+    static Node root = null;
+    static Node buildTree(Node root, int data) {
+        if(root == null) {
+            root = new Node(data);
+            return root;
+        }
+        
+        if(data < root.data) {
+            root.left = buildTree(root.left, data);
+        }
+        else {
+            root.right = buildTree(root.right, data);
+        }
+        
+        return root;
+    }
+    
+    static void inOrder(Node root) {
+        if(root == null) return;
+        inOrder(root.left);
+        System.out.print(root.data  + " ");
+        inOrder(root.right);
+    }
+    
+	public static void main(String[] args) {
+	    
+	    int[] values = {5, 3, 7, 2, 4, 6, 8};
+        
+        for (int value : values) {
+            root = buildTree(root, value);
+        }
+        
+        System.out.println("In-order traversal:");
+        inOrder(root);
+	    
+	}
+}
+
+
